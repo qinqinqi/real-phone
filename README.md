@@ -74,6 +74,34 @@ Spy-debugger内部集成了weinre，通过代理的方式拦截所有的html自�
 
 安装nginx，在nginx的配置文件中做好相关配置，启动nginx，手机和电脑在同一局域网下，手机端打开配置的域名+端口号链接就可以访问。
 
+```
+server {  
+        listen       8090;  
+        server_name  192.168.2.234:8090;  //电脑IP+域名，也是你手机要访问的地址
+        root   "C:/Users/Administrator/Desktop/demo";   //填写自己文件的路径
+          
+        autoindex off;  
+  
+        location / {  
+          index  index.html index.htm index.php;  
+          #try_files $uri $uri/ /server.php?/$uri;  
+          try_files $uri $uri/ /index.php?$query_string;  
+        }  
+  
+        location ~ \.php(.*)$ {  
+            fastcgi_pass   127.0.0.1:9000;  
+            fastcgi_index  index.php;  
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;  
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;  
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;  
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;  
+            include        fastcgi_params;  
+        }  
+}
+```
+
+
+
 
 
 
